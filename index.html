@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="header-buttons">
+                <span class="button red"></span>
+                <span class="button yellow"></span>
+                <span class="button green"></span>
+            </div>
+            <div class="header-title">
+                /bin/bash
+            </div>
+        </div>
+        <div class="terminal-body">
+            <div class="line">
+                <span class="prompt">></span>
+                <span class="path">~/url-shortener</span>
+                <span>cat welcome.txt</span>
+            </div>
+            <div class="line output">
+                <p>Welcome to the URL Shortener!</p>
+                <p>Enter a URL below to shorten it.</p>
+            </div>
+            <div class="line">
+                <span class="prompt">></span>
+                <span class="path">~/url-shortener</span>
+                <input type="text" class="input-line" placeholder="Enter your URL here...">
+            </div>
+             <div class="line output" id="output-container" style="display: none;">
+                <p>Shortened URL:</p>
+                <p><a id="short-url" href="#" target="_blank"></a></p>
+                <button id="copy-button">Copy</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
