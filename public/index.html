@@ -82,6 +82,7 @@
 }
 
 .input-line {
+    /* margin-right: 10px; */
     background: transparent;
     border: none;
     color: #00ff00;
@@ -90,6 +91,7 @@
     text-shadow: inherit;
     width: 100%;
     caret-color: #00ff00;
+    margin-left: 35px;;
 }
 
 .input-line:focus {
@@ -100,7 +102,7 @@
     color: #444;
 }
 
-/* Blinking cursor effect */
+
 .input-line {
     border-right: 2px solid #00ff00;
     animation: blink 1s step-end infinite;
@@ -173,14 +175,14 @@
                 <p>Welcome to the URL Shortener!</p>
                 <p>Enter a URL below to shorten it.</p>
             </div>
-            <div class="line">
+            <form class="line" action="/shortenURL" method="post">
                 <span class="prompt">></span>
                 <span class="path">~/url-shortener</span>
-                <input type="text" class="input-line" placeholder="Enter your URL here...">
-            </div>
+                <input name ="url" id ="url" type="text" class="input-line" placeholder="Enter your URL here...">
+            </form>
              <div class="line output" id="output-container" style="display: none;">
                 <p>Shortened URL:</p>
-                <p><a id="short-url" href="#" target="_blank"></a></p>
+                <span><a id="short-url" href="#" target="_blank"></a></span>
                 <button id="copy-button">Copy</button>
             </div>
         </div>
