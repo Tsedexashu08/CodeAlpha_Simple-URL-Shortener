@@ -136,22 +136,44 @@
     text-decoration: underline;
 }
 
-#copy-button {
-    background-color: #27c93f;
-    color: #000;
-    border: none;
-    padding: 5px 10px;
-    font-family: inherit;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 10px;
-    text-shadow: none;
+.urls-list-header {
+    color: #00ff00;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px dashed #00ff00;
+    padding-bottom: 5px;
 }
 
-#copy-button:hover {
-    background-color: #00ff00;
+.url-entry {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the start */
+    background-color: #1a1a1a;
+    padding: 8px 15px;
+    margin-bottom: 15px; /* Increased margin for better spacing */
+    border-radius: 5px;
+    box-shadow: 0 0 3px #00ff00;
+    word-wrap: break-word; /* Ensure long words break */
+    word-break: break-all; /* For non-hyphenated long words */
 }
 
+.url-entry a {
+    margin-bottom: 5px; /* Space between shortened and original URL */
+    white-space: normal; /* Allow text to wrap */
+    overflow: visible; /* Ensure content is visible */
+    text-overflow: clip; /* Prevent ellipsis */
+    width: 100%; /* Take full width */
+}
+
+.url-entry .original-url {
+    color: #00ff00;
+    text-align: left; /* Align to left */
+    white-space: normal; /* Allow text to wrap */
+    overflow: visible; /* Ensure content is visible */
+    text-overflow: clip; /* Prevent ellipsis */
+    max-width: 100%; /* Take full width */
+}
 </style>
 <body>
     <div class="terminal">
@@ -175,17 +197,67 @@
                 <p>Welcome to the URL Shortener!</p>
                 <p>Enter a URL below to shorten it.</p>
             </div>
-            <form class="line" action="/shortenURL" method="post">
+            <form class="line" onsubmit="shortenUrl(event)">
                 <span class="prompt">></span>
                 <span class="path">~/url-shortener</span>
                 <input name ="url" id ="url" type="text" class="input-line" placeholder="Enter your URL here...">
             </form>
-             <div class="line output" id="output-container" style="display: none;">
-                <p>Shortened URL:</p>
-                <span><a id="short-url" href="#" target="_blank"></a></span>
-                <button id="copy-button">Copy</button>
+            <div class="line output" id="urls-container">
+                <div class="urls-list-header">Shortened URLs</div>
             </div>
+
         </div>
     </div>
+    <script>
+        const urlsContainer = document.getElementById('urls-container');
+        const urlInput = document.getElementById('url');
+
+        async function shortenUrl(event) {
+            event.preventDefault();
+            const url = urlInput.value;
+            if (!url) {
+                return;
+            }
+
+            const response = await fetch('/shortenURL', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `url=${encodeURIComponent(url)}`,
+            });
+
+            const newUrl = await response.json();
+
+            const urlElement = document.createElement('div');
+            urlElement.classList.add('url-entry');
+            urlElement.innerHTML = `
+                    <div>Shortened URL: <a href="/${newUrl.ShortenedUrl}" target="_blank">/${newUrl.ShortenedUrl}</a></div>
+                    <div>Original URL: <span class="original-url">${newUrl.URL}</span></div>
+            `;
+            urlsContainer.prepend(urlElement);
+
+            urlInput.value = '';
+        }
+
+        async function loadUrls() {
+            const response = await fetch('/urls');
+            const urls = await response.json();
+
+            urlsContainer.innerHTML = '';
+
+            for (const url of urls) {
+                const urlElement = document.createElement('div');
+                urlElement.classList.add('url-entry');
+                urlElement.innerHTML = `
+                        <div>Shortened URL: <a href="/${url.ShortenedUrl}" target="_blank">/${url.ShortenedUrl}</a></div>
+                        <div>Original URL: <span class="original-url">${url.URL}</span></div>
+                `;
+                urlsContainer.appendChild(urlElement);
+            }
+        }
+
+        loadUrls();
+    </script>
 </body>
 </html>
