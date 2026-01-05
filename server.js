@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const app = express();
 const supabase = require("./supabaseClient");
 const PORT = process.env.PORT || 3000;
@@ -7,11 +6,11 @@ const shortId = require("shortid");
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, "public")));
-const page = path.join(__dirname, "public", "index.html");
+// Serve static files from the 'public' directory
+app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-  res.sendFile(page);
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 app.get("/urls", async (req, res) => {
@@ -54,7 +53,7 @@ app.get("/:shortenedUrl", async (req, res) => {
 
 // Catch-all route to serve the index.html file
 app.get('*', (req, res) => {
-    res.sendFile(page);
+    res.sendFile(__dirname + "/public/index.html");
 });
 
 app.listen(PORT, () => {

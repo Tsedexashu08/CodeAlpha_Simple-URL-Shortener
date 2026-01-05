@@ -258,6 +258,25 @@
         }
 
         loadUrls();
+
+        document.querySelector('form').addEventListener('submit', async e => {
+          e.preventDefault();
+          const url = document.getElementById('url').value;
+          const res = await fetch('/api/shortenURL', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url })
+          });
+          const json = await res.json();
+          if (res.ok) {
+            // show shortened link or redirect
+            window.location = '/';
+          } else {
+            alert(json.error || 'Error');
+          }
+        });
     </script>
 </body>
 </html>
+
+
