@@ -1,10 +1,10 @@
 {
   "name": "codealpha_simple-url-shortener",
   "version": "1.0.0",
-  "main": "public/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node public/server.js",
-    "dev": "nodemon public/server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.89.0",

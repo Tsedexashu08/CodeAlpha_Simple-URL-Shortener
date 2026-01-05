@@ -8,7 +8,7 @@ const shortId = require("shortid");
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
-const page = path.join(__dirname, "index.html");
+const page = path.join(__dirname, "public", "index.html");
 
 app.get("/", (req, res) => {
   res.sendFile(page);
@@ -50,6 +50,11 @@ app.get("/:shortenedUrl", async (req, res) => {
     }
 
     res.redirect(data.URL);
+});
+
+// Catch-all route to serve the index.html file
+app.get('*', (req, res) => {
+    res.sendFile(page);
 });
 
 app.listen(PORT, () => {
