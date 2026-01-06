@@ -4,6 +4,8 @@ A minimalist, terminal-themed URL shortener application built with Node.js, Expr
 
 ![Project Screenshot](image.png)
 
+## Try it out
+ **Link:** (https://code-alpha-simple-url-shortener.vercel.app/)
 
 ## Features
 
