@@ -11,8 +11,10 @@ module.exports = async (req, res) => {
     .single();
 
   if (error || !data) {
-    return res.status(404).send("URL not found");
+    console.error("Error fetching URL or URL not found:", error);
+    return res.status(404).send("Shortened URL not found.");
   }
-
-  res.redirect(data.URL);
+  
+  console.log(`Redirecting shortenedUrl: ${shortenedUrl} to: ${data.URL}`);
+  res.redirect(302, data.URL);
 };

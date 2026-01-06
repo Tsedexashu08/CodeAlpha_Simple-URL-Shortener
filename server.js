@@ -6,7 +6,6 @@ const shortId = require("shortid");
 
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from the 'public' directory
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
