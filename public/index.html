@@ -239,7 +239,7 @@
                 const urlElement = document.createElement('div');
                 urlElement.classList.add('url-entry');
                 urlElement.innerHTML = `
-                        <div>Shortened URL: <a href="/${url.ShortenedUrl}" target="_blank">/${url.ShortenedUrl}</a></div>
+                        <div>Shortened URL: <a href="${url.URL}" target="_blank">/${url.ShortenedUrl}</a></div>
                         <div>Original URL: <span class="original-url">${url.URL}</span></div>
                 `;
                 urlsContainer.appendChild(urlElement);

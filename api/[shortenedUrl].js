@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
   const { data, error } = await supabase
     .from("urls")
     .select("URL")
-    .eq("ShortenedUrl", shortenedUrl)
+    .eq("ShortenedUrl", ShortenedUrl)
     .single();
 
   if (error || !data) {
