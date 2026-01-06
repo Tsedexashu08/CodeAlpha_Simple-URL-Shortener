@@ -63,6 +63,8 @@
 
 .terminal-body {
     padding: 20px;
+    max-height: 70vh; /* Adjust as needed */
+    overflow-y: auto;
 }
 
 .line {
@@ -147,32 +149,32 @@
 
 .url-entry {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: flex-start; /* Align items to the start */
+    flex-direction: column;
+    align-items: flex-start;
     background-color: #1a1a1a;
     padding: 8px 15px;
-    margin-bottom: 15px; /* Increased margin for better spacing */
+    margin-bottom: 15px; 
     border-radius: 5px;
     box-shadow: 0 0 3px #00ff00;
-    word-wrap: break-word; /* Ensure long words break */
-    word-break: break-all; /* For non-hyphenated long words */
+    word-wrap: break-word; 
+    word-break: break-all; 
 }
 
 .url-entry a {
-    margin-bottom: 5px; /* Space between shortened and original URL */
-    white-space: normal; /* Allow text to wrap */
-    overflow: visible; /* Ensure content is visible */
-    text-overflow: clip; /* Prevent ellipsis */
-    width: 100%; /* Take full width */
+    margin-bottom: 5px; 
+    white-space: normal; 
+    overflow: visible; 
+    text-overflow: clip;
+    width: 100%; 
 }
 
 .url-entry .original-url {
     color: #00ff00;
-    text-align: left; /* Align to left */
-    white-space: normal; /* Allow text to wrap */
-    overflow: visible; /* Ensure content is visible */
-    text-overflow: clip; /* Prevent ellipsis */
-    max-width: 100%; /* Take full width */
+    text-align: left; 
+    white-space: normal; 
+    overflow: visible; 
+    text-overflow: clip;
+    max-width: 100%; 
 }
 </style>
 <body>
@@ -197,7 +199,7 @@
                 <p>Welcome to the URL Shortener!</p>
                 <p>Enter a URL below to shorten it.</p>
             </div>
-            <form class="line" onsubmit="shortenUrl(event)">
+            <form class="line">
                 <span class="prompt">></span>
                 <span class="path">~/url-shortener</span>
                 <input name ="url" id ="url" type="text" class="input-line" placeholder="Enter your URL here...">
@@ -212,45 +214,17 @@
         const urlsContainer = document.getElementById('urls-container');
         const urlInput = document.getElementById('url');
 
-        async function shortenUrl(event) {
-            event.preventDefault();
-            const url = urlInput.value;
-            if (!url) {
-                return;
-            }
-
-            const response = await fetch('/shortenURL', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `url=${encodeURIComponent(url)}`,
-            });
-
-            const newUrl = await response.json();
-
-            const urlElement = document.createElement('div');
-            urlElement.classList.add('url-entry');
-            urlElement.innerHTML = `
-                    <div>Shortened URL: <a href="/${newUrl.ShortenedUrl}" target="_blank">/${newUrl.ShortenedUrl}</a></div>
-                    <div>Original URL: <span class="original-url">${newUrl.URL}</span></div>
-            `;
-            urlsContainer.prepend(urlElement);
-
-            urlInput.value = '';
-        }
-
         async function loadUrls() {
-            const response = await fetch('/urls');
-            const urls = await response.json();
+            const response = await fetch('/api/urls');
+            const { data } = await response.json();
 
-            urlsContainer.innerHTML = '';
+            urlsContainer.innerHTML = '<div class="urls-list-header">Shortened URLs</div>';
 
-            for (const url of urls) {
+            for (const url of data) {
                 const urlElement = document.createElement('div');
                 urlElement.classList.add('url-entry');
                 urlElement.innerHTML = `
-                        <div>Shortened URL: <a href="/${url.ShortenedUrl}" target="_blank">/${url.ShortenedUrl}</a></div>
+                        <div>Shortened URL: <a href="/api/${url.ShortenedUrl}" target="_blank">/${url.ShortenedUrl}</a></div>
                         <div>Original URL: <span class="original-url">${url.URL}</span></div>
                 `;
                 urlsContainer.appendChild(urlElement);
@@ -269,7 +243,6 @@
           });
           const json = await res.json();
           if (res.ok) {
-            // show shortened link or redirect
             window.location = '/';
           } else {
             alert(json.error || 'Error');
